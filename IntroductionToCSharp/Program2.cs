@@ -635,7 +635,7 @@ using System.Runtime.Serialization;
 
 
 
-//****************************   PART 46  (Enums in an example)  ******************************//
+//****************************   PART 47  (Tutorial Enums)  ******************************//
 /* change integral (int) to enum
  * 
  * 1. Enums are enumerations
@@ -643,11 +643,12 @@ using System.Runtime.Serialization;
  *      and vice versa. Also an enum of one type cannot be implicitly assigned to an enum of another type even though the underlying value of their
  *      members are the same.
  * 3. the default underlying type of an enum is int
- * 4. The default value for first element is ZERO and gets incremented by 1.
+ * 4. The default value for first element is ZERO and gets incremented by 1. START FROM 0,1,2,3,.....
  * 5. It is possible to customize the underlying type and values
  * 6. Enums are value types
- * 7. Enum keyword (all small letters) is used to create enumerations, where as Enum class, contains static GetValues()
- *      and GetNames() method which can be used to list Enums underlying type values and Names.
+ * 7. Enum keyword (all small letters) is used to create enumerations,
+ *      where as Enum class, contains static GetValues() and GetNames() method 
+ *      which can be used to list Enums underlying type values and Names.
  * 
  */
 
@@ -694,24 +695,170 @@ using System.Runtime.Serialization;
 
 
 
-public class Enums
-{
-    public static void Main()
-    {
-        Gender gender = (Gender)Season.Winter;
-    }
-}
+//public class Enums
+//{
+//    public static void Main()
+//    {
+//        Gender gender = (Gender)Season.Winter;
+//    }
+//}
 
-public enum Gender
-{
-    Unknown = 1,
-    Male = 2,
-    Female = 3
-}
+//public enum Gender
+//{
+//    Unknown = 1,
+//    Male = 2,
+//    Female = 3
+//}
 
-public enum Season
-{
-    Winter = 1,
-    Spring = 2,
-    Summer = 3
-}
+//public enum Season
+//{
+//    Winter = 1,
+//    Spring = 2,
+//    Summer = 3
+//}
+
+
+
+
+
+//****************************   PART 48  (Difference between types and type members)  ******************************//
+/*
+ * In general:
+ *  - CLASSES, STRUCTS, ENUMS, INTERFACES, DELEGATES are called as TYPES
+ *  - FIELDS, PROPERTIES, CONSTRUCTORS, METHODS etc, are called as TYPE MEMBERS
+ *  - PRIVATE, PROTECTED, INTERNAL, PROTECTED INTERNAL, PUBLIC are called as ACCESS MODIFIERS
+ *  
+ *  - Type members can have all the access modifiers, where as types can have only 2( internal, publi)of the 5 access modifiers
+ *  
+ *  #region 
+ */
+
+
+//public class Customer
+//{
+//    #region Fields
+//    private int _id;
+//    private string _firstname;
+//    private string _lastname;
+//    #endregion
+
+//    #region Properties
+//    public int id
+//    {
+//        get { return _id; }
+//        set { _id = value; }
+//    }
+
+//    public string FirstName
+//    {
+//        get { return _firstname; }
+//        set { _firstname = value; }
+//    }
+
+//    public string LastName
+//    {
+//        get { return _lastname; }
+//        set { _lastname = value;  }
+//    }
+//    #endregion
+
+//    #region Methods
+//    public string GetFullName()
+//    {
+//        return this._firstname = " " + this.LastName; 
+//    }
+//    #endregion
+//}
+
+
+
+
+//****************************   PART 49  (Access Modifiers)  ******************************//
+/*
+ * 1. Private           - Only with in the containing class
+ * 2. Protected         - With in the containing types and the types derived from the containing typef
+ * 3. Internal
+ * 4. Protected Internal
+ * 5. Public            - Anywhere, no restrictions
+ * 
+ */
+
+
+//// private and public
+//public class Customer
+//{
+//    private int _id;
+
+//    public int ID
+//    {
+//        get
+//        {
+//            return _id;
+//        }
+//        set
+//        {
+//            _id = value;
+//        }
+//    }
+//}
+
+//public class MainClass
+//{
+//    private static void Main()
+//    {
+//        Customer C1 = new Customer();
+//        Console.WriteLine(C1.ID);
+//    }
+//}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//// protected
+//public class Customer
+//{
+//    protected int ID;
+//}
+
+//public class CorporateCustomer : Customer
+//{
+//    public void PrintID()
+//    {
+//        CorporateCustomer CC = new CorporateCustomer();
+//        CC.ID = 101;       //to call from protected access modifier 
+
+//        /*
+//         * base.ID = can also use base keyword
+//         * this.ID = can also user this keyword
+//         */
+//    }
+//}
+
+//public class MainClass
+//{
+//    private static void Main()
+//    {
+//        Customer C1 = new Customer();
+//        Console.WriteLine(C1.ID);
+
+
+//    }
+//}
+
+
+
+//****************************   PART 49  (Access Modifiers (cont..)  ******************************//
+/*
+ * 1. Private           
+ * 2. Protected         
+ * 3. Internal          - available anywhere with in the containing assembly. It's a compile time error to access, an internal member from outside the containing assembly
+ * 4. Protected Internal- can be accessed by any code in the assembly in which it is declared, or from within a derived class in another assembly
+ *                        It is combination of protected and internal.
+ * 5. Public            
+ * 
+ */
+
+
