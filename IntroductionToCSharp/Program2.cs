@@ -270,7 +270,8 @@ using System.Runtime.Serialization;
 
 
 //****************************   *PART 41  (Inner Exception)  ******************************//
-/*
+/*      TO TRACK ORIGINAL EXCEPTION 
+ *      
  *  The InnerException property returns the Exception instance that caused the current exception
  *  
  *  To retain the original exception pass it as a parameter to the constructor of the current exception
@@ -342,52 +343,375 @@ using System.Runtime.Serialization;
  * 
  * Case study:
  *  1. i have an asp.net web application
- *  2. The applicaiton should allow the user 
+ *  2. The application should allow the user 
  *  3. If the user is already logged in, and if he opens another browser window and tries to login again
  *      the application should throw an error stating he is already logged in another browser window.
  */
 
 
-public class CustomExceptionsDemo
+//public class CustomExceptionsDemo  
+//{
+//    public static void Main()
+//    {
+//        try
+//        {
+//            throw new UserAlreadyLoggedInException("User is Logged in - no duplicate session");
+//        }
+//        catch (UserAlreadyLoggedInException ex)
+//        {
+//            Console.WriteLine(ex.Message);
+//        }
+//    }
+//}
+
+//[Serializable]                      // break down the object into packet that can be trace
+////can call constructor
+//public class UserAlreadyLoggedInException : Exception
+//{
+//    public UserAlreadyLoggedInException()
+//        : base ()
+//    {
+
+//    }
+
+//    public UserAlreadyLoggedInException(string message)
+//        : base (message)                                    // 'base' invoke from base class
+//    {
+
+//    }
+
+//    public UserAlreadyLoggedInException( string message, Exception innerException)
+//        : base (message, innerException)
+//    {
+
+//    }
+
+//    public UserAlreadyLoggedInException(SerializationInfo info, StreamingContext context)
+//        : base (info, context)
+//    {
+
+//    }
+//}
+
+
+
+
+//****************************   PART 43  (Exception handling abuse)  ******************************//
+/*
+ * 
+ */
+
+
+//public class ExceptionHandlingAbuse
+//{
+//    public static void Main()
+//    {
+//        try
+//        {
+//            Console.WriteLine("Please enter Numerator");
+//            int Numerator = Convert.ToInt32(Console.ReadLine());
+
+//            Console.WriteLine("Please enter Denominator");
+//            int Denominator = Convert.ToInt32(Console.ReadLine());
+
+//            int Result = Numerator / Denominator;
+
+//            Console.WriteLine("Result = {0}", Result);
+
+//        }
+//        catch (FormatException)                 // if the input is not a number
+//        {
+//            Console.WriteLine("Please enter a number");
+//        }
+//        catch (OverflowException)               // if the input number is overlflows
+//        {
+//            Console.WriteLine("Only Numbers between  {0} and {1} are allowed", Int32.MinValue, Int32.MaxValue);
+//        }
+//        catch (DivideByZeroException)
+//        {
+//            Console.WriteLine("Denominator cannot be zero");
+//        }
+//        catch (Exception ex)
+//        {
+//            Console.WriteLine(ex.Message);
+//        }
+//    }
+//}
+
+
+
+//****************************   PART 44  (Exception handling abuse (cont..))  ******************************//
+/*
+ * BETTER WAY USE USE EXEPTION HANDLING
+ *  using Int32.TryParse is better than Convert.Int32
+ * 
+ */
+
+
+//public class ExceptionHandlingAbuse
+//{
+//    public static void Main()
+//    {
+//        try
+//        {
+//            Console.WriteLine("Please enter Numerator");
+//            int Numerator;
+//            bool IsNumeratorConversionSuccessful = Int32.TryParse(Console.ReadLine(), out Numerator);       // if input is a not a number return true or false
+
+//            if (IsNumeratorConversionSuccessful)
+//            {
+//                Console.WriteLine("Please enter Denominator");
+//                int Denominator;
+//                bool IsDenominatorConversionSuccessfull =  Int32.TryParse(Console.ReadLine(), out Denominator);
+
+//                if (IsDenominatorConversionSuccessfull && Denominator != 0)
+//                {
+//                    int Result = Numerator / Denominator;
+
+//                    Console.WriteLine("Result = {0}", Result);
+//                }
+//                else
+//                {
+//                     if(Denominator == 0)
+//                    {
+//                        Console.WriteLine("Denominator cannot be zero");
+//                    }
+//                    else
+//                    {
+//                        Console.WriteLine("Denominator should be a valid number between {0} and {1}", Int32.MinValue, Int32.MaxValue);
+//                    }
+//                }                
+//            }
+//            else
+//            {
+//                Console.WriteLine("Numerator should be a valid number between {0} and {1}", Int32.MinValue, Int32.MaxValue);
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            Console.WriteLine(ex.Message);
+//        }
+//    }
+//}
+
+
+
+//****************************   PART 45  (Why Enums)  ******************************//
+/*
+ * change the integral (int)
+ * Strongly typed constants
+ * 
+ * Advantage:
+ * 1. Less readable
+ * 2. Maintainable
+ */
+
+
+
+//public class Enums
+//{
+//    public static void Main()
+//    {
+//        Customer[] customers = new Customer[3];
+
+//        customers[0] = new Customer
+//        {
+//            Name = "Mark",
+//            Gender = 1
+//        };
+
+//        customers[1] = new Customer
+//        {
+//            Name = "Asyraf",
+//            Gender = 2
+//        };
+
+//        customers[2] = new Customer
+//        {
+//            Name = "Allen",
+//            Gender = 0
+//        };
+
+//        foreach(Customer customer in customers)
+//        {
+//            Console.WriteLine("Name = {0} && Gender = {1}", customer.Name, GetGender(customer.Gender));
+//        }
+//    }
+
+//    public static string GetGender(int gender)
+//    {
+//        switch (gender)
+//        {
+//            case 0:
+//                return "Unknown";
+//            case 1:
+//                return "Male";
+//            case 2:
+//                return "Female";
+//            default:
+//                return "Invalid data detected";
+//        }
+//    }
+//}
+
+//// 0 - Unknown
+//// 1 - Male
+//// 2 - Female
+//public class Customer
+//{
+//    public string Name { get; set; }
+//    public int Gender { get; set; }
+//}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+//public class Enums
+//{
+//    public static void Main()
+//    {
+
+
+//        Customer[] customers = new Customer[3];
+
+//        customers[0] = new Customer
+//        {
+//            Name = "Mark",
+//            Gender = Gender.Male
+//        };
+
+//        customers[1] = new Customer
+//        {
+//            Name = "Asyraf",
+//            Gender = Gender.Female
+//        };
+
+//        customers[2] = new Customer
+//        {
+//            Name = "Allen",
+//            Gender = Gender.Unknown
+//        };
+
+//        foreach (Customer customer in customers)
+//        {
+//            Console.WriteLine("Name = {0} && Gender = {1}", customer.Name, GetGender(customer.Gender));
+//        }
+//    }
+
+//    public static string GetGender(Gender gender)  //1st change
+//    {
+//        switch (gender)
+//        {
+//            case Gender.Unknown:                   //2nd change
+//                return "Unknown";
+//            case Gender.Male:                      //2nd change
+//                return "Male";
+//            case Gender.Female:                     //2nd change
+//                return "Female";
+//            default:
+//                return "Invalid data detected";
+//        }
+//    }
+//}
+
+//public enum Gender
+//{
+//    Unknown,
+//    Male,
+//    Female
+//}
+
+//// 0 - Unknown
+//// 1 - Male
+//// 2 - Female
+//public class Customer
+//{
+//    public string Name { get; set; }
+//    public Gender Gender { get; set; }  // 1st change
+//}
+
+
+
+
+
+//****************************   PART 46  (Enums in an example)  ******************************//
+/* change integral (int) to enum
+ * 
+ * 1. Enums are enumerations
+ * 2. Enums are strongly typed constants. Hence, an explicit cast is needed to convert from enum type to an integral type
+ *      and vice versa. Also an enum of one type cannot be implicitly assigned to an enum of another type even though the underlying value of their
+ *      members are the same.
+ * 3. the default underlying type of an enum is int
+ * 4. The default value for first element is ZERO and gets incremented by 1.
+ * 5. It is possible to customize the underlying type and values
+ * 6. Enums are value types
+ * 7. Enum keyword (all small letters) is used to create enumerations, where as Enum class, contains static GetValues()
+ *      and GetNames() method which can be used to list Enums underlying type values and Names.
+ * 
+ */
+
+
+//public class Enums
+//{
+//    public static void Main()
+//    {
+
+
+//        Gender gender = (Gender)3;
+//        int Num = (int)Gender.Unknown;
+
+//        //typeof
+//        short[] Values = (short[])Enum.GetValues(typeof(Gender));
+
+//        foreach (short value in Values)
+//        {
+//            Console.WriteLine(value);
+//        }
+
+//        string[] Names = Enum.GetNames(typeof(Gender));
+
+//        foreach (string Name in Names)
+//        {
+//            Console.WriteLine(Name);
+//        }
+//    }
+//}
+
+//public enum Gender
+//{
+//    Unknown = 1,
+//    Male = 2,
+//    Female = 3
+//}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+///
+
+
+
+
+public class Enums
 {
     public static void Main()
     {
-        try
-        {
-            throw new UserAlreadyLoggedInException("User is Logged in - no duplicate session");
-        }
-        catch (UserAlreadyLoggedInException ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        Gender gender = (Gender)Season.Winter;
     }
 }
 
-[Serializable]
-public class UserAlreadyLoggedInException : Exception
+public enum Gender
 {
-    public UserAlreadyLoggedInException()
-        : base ()
-    {
-
-    }
-
-    public UserAlreadyLoggedInException(string message)
-        : base (message)
-    {
-
-    }
-
-    public UserAlreadyLoggedInException( string message, Exception innerException)
-        : base (message, innerException)
-    {
-         
-    }
-
-    public UserAlreadyLoggedInException(SerializationInfo info, StreamingContext context)
-        : base (info, context)
-    {
-
-    }
+    Unknown = 1,
+    Male = 2,
+    Female = 3
 }
 
+public enum Season
+{
+    Winter = 1,
+    Spring = 2,
+    Summer = 3
+}
