@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
 
 
 //****************************   **PART 36,37,38  (Delegates)  ******************************//
@@ -851,6 +849,8 @@ using System.Runtime.Serialization;
 
 
 //****************************   PART 49  (Access Modifiers (cont..)  ******************************//
+//****************************   **PART 51  (Access Modifiers for Types)  ******************************//
+
 /*
  * 1. Private           
  * 2. Protected         
@@ -860,5 +860,16 @@ using System.Runtime.Serialization;
  * 5. Public            
  * 
  */
+
+
+//public class MainClass
+//{
+//    private static void Main()
+//    {
+
+
+
+//    }
+//}
 
 
