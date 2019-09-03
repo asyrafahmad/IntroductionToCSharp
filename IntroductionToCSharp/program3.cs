@@ -202,43 +202,446 @@ using System.Reflection;
 
 
 
-//****************************   PART 55  (Late binding using reflection)  ******************************//
+//****************************   **PART 55  (Late binding using reflection)  ******************************//
 /*
+ * late binding is much better than early binding 
+ * 
+ * BUT in time purposes, early binding is better than late binding.
+ * 
+ * 
+ * early binding 
+ * - can know misspelling missmatches or type missmatches
+ * 
+ * late bnding
+ * - doesn't know the missmatches until we run the application
+ * 
+ * Differences
+ * 1. Early binding can flag errors at compile time. With late binding there is risk of run time exceptions
+ * 2. Early binding is much better for performance and should always be preferred over late binding. 
+ *      Use late binding only when working with an objects that are not available at compile time.  
+ */
+
+//namespace Pragim  //assembly
+//{
+//    public class MainClass
+//    {
+//        private static void Main()
+//        {
+//            /* Late binding */
+//            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+
+//            Type customerType = executingAssembly.GetType("Pragim.Customer");
+
+//            object customerInstance = Activator.CreateInstance(customerType);
+
+//            MethodInfo GetFullNameMethod = customerType.GetMethod("GetFullnames");
+
+//            string[] parameters = new string[2];
+//            parameters[0] = "Pragim";
+//            parameters[1] = "Technologies";
+
+//            string fullName = (string)GetFullNameMethod.Invoke(customerInstance, parameters);
+//            Console.WriteLine("FullName = {0}", fullName);
+
+
+
+//        //    /* Early binding */
+//        //    Customer C1 = new Customer();
+//        //    string fullName = C1.GetFullName("Pragim", "Tech");
+//        //    Console.WriteLine("Full Name = {0}", fullName);
+//        }
+//    }
+
+//    public class Customer
+//    {
+//        public string GetFullName(string FirstName, string LastName)
+//        {
+//            return FirstName + " " + LastName;
+//        }
+//    }
+//}
+
+
+
+//****************************   PART 56  (Generics in C#)  ******************************//
+/*
+ * - Introduced in C# 2.0. Generics allow us to design classes and methods decoupled from the data types.
+ * - are extensively used by collection classes available in System.Collection.Generic namespace
+ * - on
  * 
  */
 
-namespace Pragim
-{
-    public class MainClass
-    {
-        private static void Main()
-        {
-            Assembly executingAssembly = Assembly.GetExecutingAssembly();
 
-            Type customerType = executingAssembly.GetType("Pragim.Customer");
+//namespace Pragim
+//{
+//    public class MainClass
+//    {
+//        private static void Main()
+//        {
+//            bool Equal = Calculator.AreEqual(1, 1);
 
-            object customerInstance = Activator.CreateInstance(customerType);
+//            if(Equal)
+//            {
+//                Console.WriteLine("Equal");
+//            }
+//            else
+//            {
+//                Console.WriteLine("Not Equal");
+//            }
+//        }
+//    }
 
-            MethodInfo GetFullNameMethod = customerType.GetMethod("GetFullname");
+//    public class Calculator
+//    {
+//        public static bool AreEqual(int Value1, int Value2)
+//        {
+//            return Value1 == Value2;
+//        }
+//    }
+//}
 
-            string[] parameters = new string[2];
-            parameters[0] = "Pragim";
-            parameters[1] = "Technologies";
 
-            string fullName = (string)getFullNameMethod.Invoke(customerInstance, parameters);
-            Console.WriteLine("FullName = {0}", fullName);
+/////////////////////////////////////////////////////////////////////////////////
+///
 
-        //    Customer C1 = new Customer();
-        //    string fullName = C1.GetFullName("Pragim", "Tech");
-        //    Console.WriteLine("Full Name = {0}", fullName);
-        }
-    }
 
-    public class Customer
-    {
-        public string GetFullName(string FirstName, string LastName)
-        {
-            return FirstName + " " + LastName;
-        }
-    }
-}
+//namespace Pragim
+//{
+//    public class MainClass
+//    {
+//        private static void Main()
+//        {
+//            bool Equal = Calculator.AreEqual("A", "B");
+
+//            if (Equal)
+//            {
+//                Console.WriteLine("Equal");
+//            }
+//            else
+//            {
+//                Console.WriteLine("Not Equal");
+//            }
+//        }
+//    }
+
+//    public class Calculator
+//    {
+//        //to string
+//           //change int to object
+//        public static bool AreEqual(object Value1, object Value2)
+//        {
+//            return Value1 == Value2;
+//        }
+//    }
+//}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+
+//// using generics
+//// make our code independent
+//namespace Pragim
+//{
+//    public class MainClass
+//    {
+//        private static void Main()
+//        {
+//            // add string/int
+//            bool Equal = Calculator.AreEqual<int>(1, 1);
+
+//            if (Equal)
+//            {
+//                Console.WriteLine("Equal");
+//            }
+//            else
+//            {
+//                Console.WriteLine("Not Equal");
+//            }
+//        }
+//    }
+
+//    //make class generics
+//    public class Calculator<T> 
+//    public class Calculator 
+//    {
+//        // add T
+//        // T is a string/int
+//        public static bool AreEqual<T>( T Value1, T Value2)
+//        {
+//            //comparison
+//            return Value1.Equals(Value2);
+//        }
+//    }
+//}
+
+
+/* OR   */
+
+
+//// using generics at class
+//// make our code independent
+//namespace Pragim
+//{
+//    public class MainClass
+//    {
+//        private static void Main()
+//        {
+//            // add string/int
+//            bool Equal = Calculator<int>.AreEqual(1, 1);
+
+//            if (Equal)
+//            {
+//                Console.WriteLine("Equal");
+//            }
+//            else
+//            {
+//                Console.WriteLine("Not Equal");
+//            }
+//        }
+//    }
+
+//    //make class generics
+//    public class Calculator<T>
+//      {
+//        // add T
+//        // T is a string/int
+//        public static bool AreEqual<T>(T Value1, T Value2)
+//        {
+//            //comparison
+//            return Value1.Equals(Value2);
+//        }
+//    }
+//}
+
+
+
+//****************************   PART 57  (Why should override ToString())  ******************************//
+/*
+ * 
+ * 
+ */
+
+//namespace Pargim
+//{
+//    public class MainClass
+//    {
+//        private static void Main()
+//        {
+//            int Number = 10;
+//            Console.WriteLine(Number.ToString());
+
+//            Customer C1 = new Customer();
+//            C1.FirstName = "Asyraf";
+//            C1.LastName = "Ahmad";
+
+//            //Console.WriteLine(C1.ToString());
+//            //      OR
+//            Console.WriteLine(Convert.ToString(C1));
+//        }
+//    }
+
+//    public class Customer
+//    {
+//        public string FirstName { get; set; }
+//        public string LastName { get; set; }
+
+//        //override method
+//        public override string ToString()
+//        {
+//            return this.LastName + ", " + this.FirstName;
+//        }
+//    }
+//}
+
+
+
+
+//****************************   PART 58  (Why should override Equals Method)  ******************************//
+/*
+ * 
+ * 
+ */
+
+//namespace Pragim
+//{
+//    public class MainClass
+//    {
+//        private static void Main()
+//        {
+//            //int i = 10;
+//            //int j = 10;
+
+//            Direction direction1 = Direction.East;
+//            Direction direction2 = Direction.West;
+
+
+//            Console.WriteLine(direction1 == direction2);
+//            Console.WriteLine(direction1.Equals(direction2)); 
+//        }
+//    }
+
+//    public enum Direction
+//    {
+//        East = 1,
+//        West = 2,
+//        North = 3, 
+//        South = 4 
+//    }
+//}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+//namespace Pragim
+//{
+//    public class MainClass
+//    {
+//        private static void Main()
+//        {
+//            //ANSWER : TRUE
+//            Customer C1 = new Customer();
+//            C1.FirstName = "Asyraf";
+//            C1.LastName = "Ahmad";
+
+//            Customer C2 = C1;
+
+//            Console.WriteLine(C1 == C2);
+//            Console.WriteLine(C1.Equals(C2));
+
+//            ///////////////////////////////
+
+//            ////ANSWER : FALSE
+//            //Customer C1 = new Customer();
+//            //C1.FirstName = "Asyraf";
+//            //C1.LastName = "Ahmad";
+
+//            //Customer C2 = new Customer();
+//            //C2.FirstName = "Asyraf";
+//            //C2.LastName = "Ahmad";
+
+
+//            //Console.WriteLine(C1 == C2);        //reference equality
+//            //Console.WriteLine(C1.Equals(C2));   //value equality
+
+//        }
+//    }
+
+//    public class Customer
+//    {
+//        public string FirstName { get; set; }
+//        public string LastName { get; set; }
+
+//        public override bool Equals(object obj)
+//        {
+//            if(obj == null)
+//            {
+//                return false;
+//            }
+
+//            if (!(obj is Customer))
+//            {
+//                return false; 
+//            }
+
+//            return this.FirstName == ((Customer)obj).FirstName && this.LastName == ((Customer)obj).LastName;
+//        }
+
+//        public override int GetHashCode()
+//        {
+//            return this.FirstName.GetHashCode() ^ this.LastName.GetHashCode();
+//        }
+//    }
+//}
+
+
+
+//****************************   PART 59  (Difference between Convert.ToString() and ToString())  ******************************//
+/*
+ * Convert.ToString() handles NULL
+ * ToString() doesn't and throws a NULL Reference exception
+ * 
+ */
+
+
+//namespace Pragim
+//{
+//    public class MainClass
+//    {
+//        private static void Main()
+//        {
+//            Customer C1 = null;
+//            string str = C1.ToString();
+//            //          OR
+//            //string str = Convert.ToString(C1);
+//            Console.WriteLine(str);
+//        }
+//    }
+
+//    public class Customer
+//    {
+//        public string Name { get; set; }
+//    }
+//}
+
+
+
+//****************************   PART 60  (Difference between String and StringBuilder)  ******************************//
+/*
+ * StringBuilder is better than String, its good for performance
+ * 
+ * 
+ * System.String is immutable (unchanging over time or unable to changed)
+ * - used a lot of memory
+ * 
+ * StringBuilder is mutable (liable to change)
+ * - used less memory
+ * 
+ */
+
+//using System.Text;
+
+//namespace Pragim
+//{
+//    public class MainClass
+//    {
+//        public static void Main()
+//        {
+//            ////using String
+//            //string userString = "C#";
+//            //userString += "Video";
+//            //userString += "Tutorial";
+//            //userString += "for";
+//            //userString += "Beginner";
+//            //Console.WriteLine(userString);
+
+
+//            ////        OR          ////
+
+
+//            ////using String
+//            //string userString = string.Empty;
+//            //for(int i = 1; i <= 10000; i++)
+//            //{
+//            //    userString += i.ToString() + " ";
+//            //}
+//            //Console.WriteLine(userString);
+
+
+//            ////        OR          ////
+
+
+//            // using StringBuilder
+//            StringBuilder userString = new StringBuilder("C#");
+//            userString.Append("Video");
+//            userString.Append("Tutorial");
+//            userString.Append("Tutorial");
+//            userString.Append("Beginner");
+//            Console.WriteLine(userString.ToString());
+//        }
+//    }
+//}
