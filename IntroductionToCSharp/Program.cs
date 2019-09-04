@@ -1,30 +1,32 @@
 ﻿//using System;
 
 
+
+   // ***************** PART 1 & 2   *************************//
+
 //class Program
 //{
-//    //*****************   PART 1 & 2   *************************//
 
-//    //static void Main1()
-//    //{
-//    //    Console.WriteLine("Welcome to C# Training 1");
-//    //}
+//    static void Main1()
+//    {
+//        Console.WriteLine("Welcome to C# Training 1");
+//    }
 
-//    //static void Main()
-//    //{
-//    //    Console.WriteLine("Welcome to C# Training");
-//    //    Main1();
+//    static void Main()
+//    {
+//        Console.WriteLine("Welcome to C# Training");
+//        Main1();
 
 
-//    //    Console.WriteLine("Please enter your firstname");
-//    //    string FirstName = Console.ReadLine();
+//        Console.WriteLine("Please enter your firstname");
+//        string FirstName = Console.ReadLine();
 
-//    //    Console.WriteLine("Please enter your lastname");
-//    //    string LastName = Console.ReadLine();
+//        Console.WriteLine("Please enter your lastname");
+//        string LastName = Console.ReadLine();
 
-//    //    Console.WriteLine("Hello {0} {1}", FirstName, LastName);   // Place holder syntax - Most Preferred
-//    //    Console.WriteLine("Hello " + FirstName);                   // Concatenation
-//    //}
+//        Console.WriteLine("Hello {0} {1}", FirstName, LastName);   // Place holder syntax - Most Preferred
+//        Console.WriteLine("Hello " + FirstName);                   // Concatenation
+//    }
 
 
 

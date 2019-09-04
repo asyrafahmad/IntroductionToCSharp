@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 
@@ -645,3 +647,377 @@ using System.Reflection;
 //        }
 //    }
 //}
+
+
+//****************************   **PART 61  (Partial Classes)  ******************************//
+/* 
+ * allow us to split a class into 2 or more files. All these parts are then combined into a single class., when the application is compiled.
+ * 'partial' keyword can also be used to split a struct or an interface over two or more files
+ * 
+ * Advantages of partial classes
+ * 1. spreading  a class over separate files allow multiple programmers to work on it simultaneously. (when working on large projects) 
+ *
+ */
+
+
+//namespace AdoDemo
+//{
+//    public class Customer
+//    {
+//        private string _firstName;
+//        private string _lastName;
+
+//        public string LastName
+//        {
+//            get { return _lastName; }
+//            set { _lastName = value; }
+//        }
+
+//        public string FirstName
+//        {
+//            get { return _firstName; }
+//            set { _firstName = value; }
+//        }
+
+//        public string GetFullName()
+//        {
+//            return (_firstName + ", " + _lastName);
+//        }
+//    }
+//}
+
+
+
+//****************************   **PART 62  (Creating partial classes)  ******************************//
+/* 
+ * 1. All the parts spread across different files, must use the partial keyword
+ * 2. All the parts spread across different files, must have the same access modifiers
+ * 3. If any of the parts are declared abstract, the the entire type is considered abstract
+ * 4. If any of the parts are declared sealed, then the entire type is considered sealed
+ * 5. If any of the parts inherit a class, then the entire type inherits that class
+ * 6. C# does not support multipe class inheritance. Difference parts of the partial class, must not specify different base classes.
+ * 7. Different parts of the partial class can specify different bas interfaces, and the final type implements all of the interfaces listed by all of the partial declarations
+ * 8. Any members that are declared in a partial definition are available to all of the other parts of the partail class.
+ * 
+ */
+
+
+
+
+
+
+
+
+
+//****************************   PART 63  (Partial Methods)  ******************************//
+/* 
+ * 1. A partial class or a struct can contain partial methods
+ * 2. A partial method is created using the partial keyword. 
+ * 3. A partial method declaration consists of two parts. 
+        i) The definition (only the method signature)
+        ii) The implementation. 
+        These may be in separate parts of a partial class, or in the same part.
+ * 4. The implementation for a partial method is optional. If we don't provide the implementation, the compiler removes the signature and all calls to the method.
+ * 5. Partial methods are private by default, and it is a compile time error to include any access modifiers, including private.
+ * 6. It is a compile time error, to include declaration and implementation at the same time for a partial method.
+ * 7. A partial method return type must be void. Including any other return type is a compile time error.
+ * 8. Signature of the partial method declaration, must match with the signature of the implementation.
+ * 9. A partial method must be declared within a partial class or partial struct. A non partial class or struct cannot include partial methods.
+ * 10. A partial method can be implemented only once. Trying to implement a partial method more than once, raises a compile time error
+ * 
+ */
+
+
+//namespace IntroductionToCSharp
+//{
+//    class Program
+//    {
+//        static void Main()
+//        {
+//            SamplePartialClass SPC = new SamplePartialClass();
+//            SPC.PublicMethod();  
+//        }
+//    }
+//}
+
+
+
+//****************************   PART 64 (How and where are indexers used)  ******************************//
+/*
+ * using 'this' keyword indexer
+ * Indexer is like session  
+ */
+
+
+////in WebForm1.aspx file
+//namespace Demo{
+
+//    public partial class WebForm1 : System.Web.UI.Page
+//    {
+//        protected void Page_Load(object sender, EventArgs e)
+//        {
+//            string CS = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+//            using (SqlConnection con = new SqlConnection(CS))
+//            {
+//                SqlCommand cmd = new SqlCommand("Select * fromtblEmployee", con);
+//                con.Open();
+//                SqlDataReader rdr = cmd.ExecuteReader();
+//                while (rdr.Read())
+//                {
+//                    Response.Write("Id = " + rdr[0].ToString() + " ");
+//                    Response.Write("Name = " + rdr["Name"].ToString());
+//                    Response.Write("<br/>");
+//                }
+//            }
+//        }
+//    }
+//}
+
+
+
+
+//****************************   **PART 65 (Indexers)  ******************************//
+/*
+ * Points to remember
+ * 1. Use "this" keyword to create and indexer
+ * 2. Just ike properties indexers have get and set accessser
+ * 3. Indexers can also be overloaded
+ */
+
+
+//namespace Demo
+//{
+//    public class Employee
+//    {
+//        public int EmployeeId { get; set; }
+//        public string Name { get; set; }
+//        public string Gender { get; set; }
+//    }
+
+//    public class Company
+//    {
+//        private List<Employee> listEmployees;
+
+//        public Company()
+//        {
+//            listEmployees = new List<Employee>();
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 1,
+//                Name = "Mike",
+//                Gender = "Male"
+//            });
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 2,
+//                Name = "Pam",
+//                Gender = "Female"
+//            });
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 3,
+//                Name = "John",
+//                Gender = "Male"
+//            });
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 4,
+//                Name = "Maxine",
+//                Gender = "Female"
+//            });
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 5,
+//                Name = "Emiliy",
+//                Gender = "Female"
+//            });
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 6,
+//                Name = "Scott",
+//                Gender = "Male"
+//            });
+//        }
+
+
+//        public string this[int employeeId]
+//        {
+//            get
+//            {
+//                return listEmployees.FirstOrDefault(emp => emp.EmployeeId == employeeId).Name;
+//            }
+//            set
+//            {
+//                listEmployees.FirstOrDefault(emp => emp.EmployeeId == employeeId).Name = value;
+//            }
+//        }
+//    }
+//}
+
+
+////in WebForm1.aspx.cs
+
+
+//namespace Demo
+//{ 
+//    public partial class WebForm1 : System.Web.UI.Page
+//    {
+//        protected void Page_Load(object sender, EventArgs e)
+//        {
+//            Company company = new Company();
+//            Response.Write("Name of Employee with Id = 2:" + company[2]);
+//            Response.Write("<br/>");
+//            Response.Write("Name of Employee with Id = 5:" + company[5]);
+//            Response.Write("<br/>");
+//            Response.Write("Name of Employee with Id = 8:" + company[8]);
+//            Response.Write("<br/>");
+//            Response.Write("<br/>");
+
+//            Response.Write("Changing names of employees with Id = 2, 5 & 8");
+//            Response.Write("<br/>");
+//            Response.Write("<br/>");
+
+//            company[2] = "2nd Employee Name Changed";
+//            company[5] = "5th Employee Name Changed";
+//            company[8] = "8th Employee Name Changed";
+
+//            Response.Write("Name of Employee with Id = 2:" + company[2]);
+//            Response.Write("<br/>");
+//            Response.Write("Name of Employee with Id = 5:" + company[5]);
+//            Response.Write("<br/>");
+//            Response.Write("Name of Employee with Id = 8:" + company[8]);
+//            Response.Write("<br/>");
+
+
+//        }
+//    }
+//}
+
+    
+    
+    
+//****************************   PART 66 (Overloading Indexers)  ******************************//
+/*
+ * 
+ * Indexers are overloaded based on the number and type of parameters
+ */
+
+
+namespace Demo
+{
+    public class Employee
+    {
+        public int EmployeeId { get; set; }
+        public string Name { get; set; }
+        public string Gender { get; set; }
+    }
+
+    public class Company
+    {
+        private List<Employee> listEmployees;
+
+        public Company()
+        {
+            listEmployees = new List<Employee>();
+            listEmployees.Add(new Employee()
+            {
+                EmployeeId = 1,
+                Name = "Mike",
+                Gender = "Male"
+            });
+            listEmployees.Add(new Employee()
+            {
+                EmployeeId = 2,
+                Name = "Pam",
+                Gender = "Female"
+            });
+            listEmployees.Add(new Employee()
+            {
+                EmployeeId = 3,
+                Name = "John",
+                Gender = "Male"
+            });
+            listEmployees.Add(new Employee()
+            {
+                EmployeeId = 4,
+                Name = "Maxine",
+                Gender = "Female"
+            });
+            listEmployees.Add(new Employee()
+            {
+                EmployeeId = 5,
+                Name = "Emiliy",
+                Gender = "Female"
+            });
+            listEmployees.Add(new Employee()
+            {
+                EmployeeId = 6,
+                Name = "Scott",
+                Gender = "Male"
+            });
+        }
+
+
+        public string this[int employeeId]
+        {
+            get
+            {
+                return listEmployees.FirstOrDefault(emp => emp.EmployeeId == employeeId).Name;
+            }
+            set
+            {
+                listEmployees.FirstOrDefault(emp => emp.EmployeeId == employeeId).Name = value;
+            }
+        }
+
+        public string this[string Gender]
+        {
+            get
+            {
+                return listEmployees.Count(emp => emp.Gender == Gender).ToString();
+            }
+            set
+            {
+                foreach(Employee employee in listEmployees)
+                {
+                    if(employee.Gender == Gender)
+                    {
+                        employee.Gender = value;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//in WebForm1.aspx.cs
+
+
+namespace Demo
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            Company company = new Company();
+            Response.Write("Before update");
+            Response.Write("<br/>");
+            Response.Write("Total Male Employees = " + company["Male"]);
+            Response.Write("<br/>");
+            Response.Write("Total Female Employees = " + company["Female"]);
+
+            
+            Response.Write("<br/>");
+            Response.Write("<br/>");
+
+            company["Male"] = "Female";
+            Response.Write("Before Update");
+            Response.Write("Total Male Employees = " + company["Male"]);
+            Response.Write("<br/>");
+            Response.Write("Total Female Employees = " + company["Female"]);
+
+
+        }
+    }
+}
