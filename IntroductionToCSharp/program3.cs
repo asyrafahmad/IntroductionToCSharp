@@ -893,9 +893,9 @@ using System.Reflection;
 //    }
 //}
 
-    
-    
-    
+
+
+
 //****************************   PART 66 (Overloading Indexers)  ******************************//
 /*
  * 
@@ -903,121 +903,316 @@ using System.Reflection;
  */
 
 
-namespace Demo
-{
-    public class Employee
-    {
-        public int EmployeeId { get; set; }
-        public string Name { get; set; }
-        public string Gender { get; set; }
-    }
+//namespace Demo
+//{
+//    public class Employee
+//    {
+//        public int EmployeeId { get; set; }
+//        public string Name { get; set; }
+//        public string Gender { get; set; }
+//    }
 
-    public class Company
-    {
-        private List<Employee> listEmployees;
+//    public class Company
+//    {
+//        private List<Employee> listEmployees;
 
-        public Company()
-        {
-            listEmployees = new List<Employee>();
-            listEmployees.Add(new Employee()
-            {
-                EmployeeId = 1,
-                Name = "Mike",
-                Gender = "Male"
-            });
-            listEmployees.Add(new Employee()
-            {
-                EmployeeId = 2,
-                Name = "Pam",
-                Gender = "Female"
-            });
-            listEmployees.Add(new Employee()
-            {
-                EmployeeId = 3,
-                Name = "John",
-                Gender = "Male"
-            });
-            listEmployees.Add(new Employee()
-            {
-                EmployeeId = 4,
-                Name = "Maxine",
-                Gender = "Female"
-            });
-            listEmployees.Add(new Employee()
-            {
-                EmployeeId = 5,
-                Name = "Emiliy",
-                Gender = "Female"
-            });
-            listEmployees.Add(new Employee()
-            {
-                EmployeeId = 6,
-                Name = "Scott",
-                Gender = "Male"
-            });
-        }
-
-
-        public string this[int employeeId]
-        {
-            get
-            {
-                return listEmployees.FirstOrDefault(emp => emp.EmployeeId == employeeId).Name;
-            }
-            set
-            {
-                listEmployees.FirstOrDefault(emp => emp.EmployeeId == employeeId).Name = value;
-            }
-        }
-
-        public string this[string Gender]
-        {
-            get
-            {
-                return listEmployees.Count(emp => emp.Gender == Gender).ToString();
-            }
-            set
-            {
-                foreach(Employee employee in listEmployees)
-                {
-                    if(employee.Gender == Gender)
-                    {
-                        employee.Gender = value;
-                    }
-                }
-            }
-        }
-    }
-}
+//        public Company()
+//        {
+//            listEmployees = new List<Employee>();
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 1,
+//                Name = "Mike",
+//                Gender = "Male"
+//            });
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 2,
+//                Name = "Pam",
+//                Gender = "Female"
+//            });
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 3,
+//                Name = "John",
+//                Gender = "Male"
+//            });
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 4,
+//                Name = "Maxine",
+//                Gender = "Female"
+//            });
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 5,
+//                Name = "Emiliy",
+//                Gender = "Female"
+//            });
+//            listEmployees.Add(new Employee()
+//            {
+//                EmployeeId = 6,
+//                Name = "Scott",
+//                Gender = "Male"
+//            });
+//        }
 
 
-//in WebForm1.aspx.cs
+//        public string this[int employeeId]
+//        {
+//            get
+//            {
+//                return listEmployees.FirstOrDefault(emp => emp.EmployeeId == employeeId).Name;
+//            }
+//            set
+//            {
+//                listEmployees.FirstOrDefault(emp => emp.EmployeeId == employeeId).Name = value;
+//            }
+//        }
+
+//        public string this[string Gender]
+//        {
+//            get
+//            {
+//                return listEmployees.Count(emp => emp.Gender == Gender).ToString();
+//            }
+//            set
+//            {
+//                foreach(Employee employee in listEmployees)
+//                {
+//                    if(employee.Gender == Gender)
+//                    {
+//                        employee.Gender = value;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 
-namespace Demo
-{
-    public partial class WebForm1 : System.Web.UI.Page
-    {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            Company company = new Company();
-            Response.Write("Before update");
-            Response.Write("<br/>");
-            Response.Write("Total Male Employees = " + company["Male"]);
-            Response.Write("<br/>");
-            Response.Write("Total Female Employees = " + company["Female"]);
-
-            
-            Response.Write("<br/>");
-            Response.Write("<br/>");
-
-            company["Male"] = "Female";
-            Response.Write("Before Update");
-            Response.Write("Total Male Employees = " + company["Male"]);
-            Response.Write("<br/>");
-            Response.Write("Total Female Employees = " + company["Female"]);
+////in WebForm1.aspx.cs
 
 
-        }
-    }
-}
+//namespace Demo
+//{
+//    public partial class WebForm1 : System.Web.UI.Page
+//    {
+//        protected void Page_Load(object sender, EventArgs e)
+//        {
+//            Company company = new Company();
+//            Response.Write("Before update");
+//            Response.Write("<br/>");
+//            Response.Write("Total Male Employees = " + company["Male"]);
+//            Response.Write("<br/>");
+//            Response.Write("Total Female Employees = " + company["Female"]);
+
+
+//            Response.Write("<br/>");
+//            Response.Write("<br/>");
+
+//            company["Male"] = "Female";
+//            Response.Write("Before Update");
+//            Response.Write("Total Male Employees = " + company["Male"]);
+//            Response.Write("<br/>");
+//            Response.Write("Total Female Employees = " + company["Female"]);
+
+
+//        }
+//    }
+//}
+
+
+
+//****************************   PART 67 (Optional Parameters)  ******************************//
+/*
+ * There are 4 ways that can be used to make method parameters optional.
+ * 1. Use parameter arrays by using 'params' keyword (part 67)
+ * 2. Method overloading
+ * 3. Specify parameter defaults
+ * 4. Use OptionalAttribute that is present in System.Runtime.InteropServices namespace
+ */
+
+
+//namespace Demo
+//{
+//    class Program
+//    {
+//        public static void Main()
+//        {
+//            //AddNumbers(10, 20, 30, 40, 50);
+
+//            ////        OR
+
+//            AddNumbers(10, 20, new object[] { 30, 40, 50 });
+
+//        }
+
+//        public static void AddNumbers(int firstNumber, int secondNumber, params object[] restOfNumbers)
+//        {
+//            int result = firstNumber + secondNumber;
+//            if (restOfNumbers != null)
+//            {
+//                foreach(int i in restOfNumbers)
+//                {
+//                    result += i;
+//                }
+
+//                Console.WriteLine("Sum = " + result);
+//            }
+//        }
+//    }
+//}
+
+
+
+//****************************   PART 68 (Making method parameter optional using method overloading)  ******************************//
+/*
+ * There are 4 ways that can be used to make method parameters optional.
+ * 1. Use parameter arrays by using 'params' keyword 
+ * 2. Method overloading (part 68)
+ * 3. Specify parameter defaults
+ * 4. Use OptionalAttribute that is present in System.Runtime.InteropServices namespace
+ */
+
+
+
+//namespace Demo
+//{
+//    class Program
+//    {
+//        public static void Main()
+//        {
+//            AddNumbers(10, 20, new int[] { 30, 40 });
+//        }
+
+//        public static void AddNumbers(int firstNumber, int secondNumber)
+//        {
+//            AddNumbers(firstNumber, secondNumber, null);
+//        }
+
+
+//        public static void AddNumbers(int firstNumber, int secondNumber, int[] restOfNumbers)
+//        {
+//            int result = firstNumber + secondNumber;
+//            if (restOfNumbers != null)
+//            {
+//                foreach (int i in restOfNumbers)
+//                {
+//                    result += i;
+//                }
+
+//            }
+//            Console.WriteLine("Sum = " + result);
+
+//        }
+//    }
+//}
+
+
+
+//****************************   PART 69 (Making method parameter optional by specifying parameter defaults)  ******************************//
+/*
+ * There are 4 ways that can be used to make method parameters optional.
+ * 1. Use parameter arrays by using 'params' keyword 
+ * 2. Method overloading 
+ * 3. Specify parameter defaults (part 69)
+ * 4. Use OptionalAttribute that is present in System.Runtime.InteropServices namespaces
+ */
+
+
+
+//namespace Demo
+//{
+//    class Program
+//    {
+//        public static void Main()
+//        {
+//            AddNumbers(10, 20, new int[] { 30, 40 });
+//        }
+
+
+
+//        public static void AddNumbers(int firstNumber, int secondNumber, int[] restOfNumbers = null)
+//        {
+//            int result = firstNumber + secondNumber;
+//            if (restOfNumbers != null)
+//            {
+//                foreach (int i in restOfNumbers)
+//                {
+//                    result += i;
+//                }
+
+//            }
+//            Console.WriteLine("Sum = " + result);
+
+//        }
+//    }
+//}
+
+/// 
+/// ///////////////////////////////////////////////////////////////////////////////////////
+/// 
+
+
+////**
+//namespace Demo
+//{
+//    class Program
+//    {
+//        public static void Main()
+//        {
+//            Test(1, c: 2);
+//        }
+
+
+
+//        public static void Test( int a, int b = 10, int c = 20)
+//        {
+//            Console.WriteLine("a = " + a);
+//            Console.WriteLine("b = " + b);
+//            Console.WriteLine("c = " + c);
+//        }
+//    }
+//}
+
+
+
+//****************************   PART 70 (Making method parameters optional by using OptionalAttribute)  ******************************//
+/*
+ * There are 4 ways that can be used to make method parameters optional.
+ * 1. Use parameter arrays by using 'params' keyword 
+ * 2. Method overloading 
+ * 3. Specify parameter defaults 
+ * 4. Use OptionalAttribute that is present in System.Runtime.InteropServices namespaces (part 69)
+ */
+
+
+//using System.Runtime.InteropServices;
+
+//namespace Demo
+//{
+//    class Program
+//    {
+//        public static void Main()
+//        {
+//            AddNumbers(10, 20,  new int[] { 30, 40, 50 });
+//        }
+
+//        public static void AddNumbers(int firstNumber, int secondNumber, [Optional] int[] restOfNumbers)
+//        {
+//            int result = firstNumber + secondNumber;
+
+//            if (restOfNumbers != null)
+//            {
+//                foreach (int i in restOfNumbers)
+//                {
+//                    result += i;
+//                }
+
+//            }
+//            Console.WriteLine("Total = " + result.ToString());
+
+//        }
+//    }
+//}
