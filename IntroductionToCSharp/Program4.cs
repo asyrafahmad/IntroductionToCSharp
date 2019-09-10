@@ -1257,7 +1257,7 @@ In this video, will discuss
 //                Console.WriteLine(c.ID);
 //            }
 //        }
-        
+
 //        private static int CompareComparison(Customer x, Customer y)
 //        {
 //            return x.ID.CompareTo(y.ID);
@@ -1271,11 +1271,11 @@ In this video, will discuss
 //        public string Name { get; set; }
 //        public int Salary { get; set; }
 //        public string Type { get; set; }
-        
+
 //    }
 //}
 
-    
+
 ////Approach 2
 //namespace Demo
 //{
@@ -1366,3 +1366,7 @@ In this video, will discuss
 
 //    }
 //}
+
+
+
+
