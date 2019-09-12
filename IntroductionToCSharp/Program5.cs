@@ -1341,7 +1341,7 @@ Now change the code in btnTimeConsumingWork_Click() event handler method as show
 //    }
 //}
 
-    
+
 //public class AccountManager
 //{
 //    Account _fromAccount;
@@ -1404,3 +1404,546 @@ Now change the code in btnTimeConsumingWork_Click() event handler method as show
 //        Console.WriteLine("Main Completed");
 //    }
 //}
+
+
+//******************************  PART 96 (How to resolve a deadlock in a multithreaded program)  *****************************//
+/*
+ *  There are several techniques to avoid and resolve deadlocks. For example
+ *  1. Acquiring locks in a specific defined order
+ *  2. Mutex class
+ *  3. Monitor.TryEnter() method
+ */
+
+
+//// RESOLVE DEADLOCK
+//public class Account
+//{
+//    double _balance;
+//    int _id;
+
+//    public Account(int id, double balance)
+//    {
+//        this._id = id;
+//        this._balance = balance;
+//    }
+
+//    public int ID
+//    {
+//        get
+//        {
+//            return _id;
+//        }
+//    }
+
+//    public void Withdraw(double amount)
+//    {
+//        _balance -= amount;
+//    }
+
+//    public void Deposit(double amount)
+//    {
+//        _balance += amount;
+//    }
+//}
+
+
+//public class AccountManager
+//{
+//    Account _fromAccount;
+//    Account _toAccount;
+//    double _amountToTransfer;
+
+//    public AccountManager(Account fromAccount, Account toAccount, double amountToTransfer)
+//    {
+//        this._fromAccount = fromAccount;
+//        this._toAccount = toAccount;
+//        this._amountToTransfer = amountToTransfer;
+//    }
+
+//    public void Transfer()
+//    {
+//        object _lock1, _lock2;
+//        if(_fromAccount.ID < _toAccount.ID)
+//        {
+//            _lock1 = _fromAccount;
+//            _lock2 = _toAccount;
+//        }
+//        else
+//        {
+//            _lock1 = _toAccount;
+//            _lock2 = _fromAccount;
+//        }
+
+//        //
+//        Console.WriteLine(Thread.CurrentThread.Name + " trying to acquire lock on " + ((Account)_lock1).ID.ToString());
+
+//        lock (_lock1)
+//        {
+//            //
+//            Console.WriteLine(Thread.CurrentThread.Name + " acquired lock on " + ((Account)_lock1).ID.ToString());
+//            Console.WriteLine(Thread.CurrentThread.Name + " suspended  for 1 second");
+
+//            Thread.Sleep(1000);
+//            //
+//            Console.WriteLine(Thread.CurrentThread.Name + " back in action and trying to acquire lock on " + ((Account)_lock2).ID.ToString());
+//            lock (_lock2)
+//            {
+//                Console.WriteLine(Thread.CurrentThread.Name + " acquired lock on " + ((Account)_lock2).ID.ToString());
+//                _fromAccount.Withdraw(_amountToTransfer);
+//                _toAccount.Deposit(_amountToTransfer);
+//                Console.WriteLine(Thread.CurrentThread.Name + " Transfered " + _amountToTransfer.ToString() + " from " + _fromAccount.ID.ToString() + " to " + _toAccount.ID.ToString());
+//            }
+//        }
+//    }
+//}
+
+
+//public class Program
+//{
+//    public static void Main()
+//    {
+//        Console.WriteLine("Main Started");
+//        Account accountA = new Account(101, 5000);
+//        Account accountB = new Account(102, 3000);
+
+//        AccountManager accountManagerA = new AccountManager(accountA, accountB, 1000);
+//        Thread T1 = new Thread(accountManagerA.Transfer);
+//        T1.Name = "T1";
+
+//        AccountManager accountManagerB = new AccountManager(accountA, accountB, 2000);
+//        Thread T2 = new Thread(accountManagerA.Transfer);
+//        T2.Name = "T2";
+
+//        T1.Start();
+//        T2.Start();
+
+//        T1.Join();
+//        T2.Join();
+//        Console.WriteLine("Main Completed");
+//    }
+//}
+
+
+//******************************  PART 97 (Performance of a multithreaded program)  *****************************//
+/*
+ * First let's discuss, how to find out how many processors you have on your machine?
+ * There are several ways
+ * 1. Right click on the Task bar and select "Start Task Manager" option from the context menu. Click on the the performance tab. 
+ * The number of green boxes under "CPU Usage History" should correspond to the number of processors on the machine.
+ * 2. The following code can be used in any .net application to find out the total processors on the machine Environment.ProcessorCount
+ * 3. On the windows command prompt window, type the following echo %NUMBER_OF_PROCESSORS%
+ * 
+ * On a machine that has multiple processors, multiple threads can execute application code in parallel on different cores. 
+ * For example, if there are two threads and two cores, then each thread would run on an individual core.This means, performance is better.
+ * 
+ * If two threads take 10 milli-seconds each to complete, then on a machine with 2 processors, the total time taken is 10 milli-seconds.
+ * 
+ * On a machine that has a single processor, multiple threads execute, one after the other or wait until one thread finishes. 
+ * It is not possible for a single processor system to execute multiple threads in parallel. 
+ * Since the operating system switches between the threads so fast, it just gives us the illusion that the threads run in parallel. 
+ * On a single core/processor machine multiple threads can affect performance negatively as there is overhead involved with context-switching.
+ * 
+ * If two threads take 10 milli-seconds each to complete, then on a machine with 1 processor, the total time taken is 20 milli-seconds + (Thread context switching time, if any)
+ * 
+ */
+
+
+//public class Program
+//{
+//    public static void EvenNumbersSum()
+//    {
+//        double sum = 0;
+//        for(int i = 0; i <= 50000000; i++)
+//        {
+//            if(i % 2 == 0)
+//            {
+//                sum = sum + i;
+//            }
+//        }
+//        Console.WriteLine("Sum of even numbers = {0}", sum);
+//    }
+
+//    public static void OddNumbersSum()
+//    {
+//        double sum = 0;
+//        for (int i = 0; i <= 50000000; i++)
+//        {
+//             if( i% 2 == 1)
+//             {
+//                sum = sum + i;
+//             }
+//        }
+//        Console.WriteLine("Sum of odd numbers = {0}", sum);
+//    }
+
+//    public static void Main()
+//    {
+//        Stopwatch stopwatch = Stopwatch.StartNew();
+//        EvenNumbersSum();
+//        OddNumbersSum();
+//        stopwatch.Stop();
+//        Console.WriteLine("Total miliseconds without multiple threads = " + stopwatch.ElapsedMilliseconds);
+
+//        stopwatch = Stopwatch.StartNew();
+//        Thread T1 = new Thread(EvenNumbersSum);
+//        Thread T2 = new Thread(OddNumbersSum);
+//        stopwatch.Stop();
+
+//        T1.Start();
+//        T2.Start();
+
+//        // wait for threads to finish
+//        T1.Join();
+//        T2.Join();
+
+//        stopwatch.Stop();
+//        Console.WriteLine("Total milliseconds with multiple threads = " + stopwatch.ElapsedMilliseconds);
+//    }
+//}
+
+
+
+//******************************  **PART 97 (Performance of a multithreaded program)unfinished  *****************************//
+
+//class Program
+//{
+//    public static void Main()
+//    {
+//        List<Employee> listEmployees = new List<Employee>()
+//        {
+//            new Employee{ ID= 101, Name = "Mark"},
+//            new Employee{ ID= 102, Name = "John"},
+//            new Employee{ ID= 103, Name = "Mary"},
+//        };
+
+//        // Step 2
+//        Predicate<Employee> employeePredicate = new Predicate<Employee>(FindEmployee);
+
+//        // Step 3
+//        Employee employee = listEmployees.Find(emp => FindEmployee(emp));
+//        Console.WriteLine("Id = {0}, Name = {1}", employee.ID, employee.Name);
+//    }
+
+//    // Step 1
+//    public static bool FindEmployee(Employee Emp)
+//    {
+//        return Emp.ID == 102;
+//    }
+
+//    public class Employee
+//    {
+//        public int ID { get; set; }
+//        public string Name { get; set; }
+//    }
+//}
+
+
+////        OR
+
+
+//// ANONYMOUS METHODS BY USING DELEGATES KEYWORD 
+//class Program
+//{
+//    public static void Main()
+//    {
+//        List<Employee> listEmployees = new List<Employee>()
+//        {
+//            new Employee{ ID= 101, Name = "Mark"},
+//            new Employee{ ID= 102, Name = "John"},
+//            new Employee{ ID= 103, Name = "Mary"},
+//        };
+
+
+//        Employee employee = listEmployees.Find(delegate (Employee emp)
+//        {
+//            return emp.ID == 102;
+//        });
+//        Console.WriteLine("Id = {0}, Name = {1}", employee.ID, employee.Name);
+//    }
+
+
+//    public class Employee
+//    {
+//        public int ID { get; set; }
+//        public string Name { get; set; }
+//    }
+//}
+
+
+//******************************  **PART 99 (Lambda expression)  *****************************//
+/*
+ * Anonymous methods and Lambda expressions are very similar. Anonymous methods were introduced in C# 2 and Lambda expressions in C# 3. 
+ * 
+ * To find an employee with Id = 102, using anonymous method
+ * Employee employee = listEmployees.Find(delegate(Employee Emp) { return Emp.ID == 102; });
+ * 
+ * To find an employee with Id = 102, using lambda expression
+ * Employee employee = listEmployees.Find(Emp =] Emp.ID == 102);
+ * 
+ * You can also explicitly specify the Input type but not required
+ * employee = listEmployees.Find((Employee Emp) =] Emp.ID == 102);
+ * 
+ * Notice that with a Lambda expression you don't have to use the delegate keyword explicitly and you dont't have to specify the input parameter type explicitly. 
+ * The parameter type is inferred. Lambda expressions are more convenient to use than anonymous methods. Lambda expressions are particularly helpful for writing LINQ query expressions.
+ * 
+ * =] is called lambda operator and read as GOES TO.
+ * 
+ * 
+ * 
+ * In most of the cases Lambda expressions supersedes anonymous methods. 
+ * To my knowledge, the only time I prefer to use anonymous methods over lambdas is, when we have to omit the parameter list when it's not used within the body. 
+ * 
+ * Anonymous methods allow the parameter list to be omitted entirely when it's not used within the body, where as with lambda expressions this is not the case.
+ * 
+ * (DELEGATE METHOD)
+ * For example, with anonymous method notice that we have omitted the parameter list as we are not using them within the body
+ * 
+ *      Button1.Click += delegate
+ *      {
+ *          MessageBox.Show("Button Clicked");
+ *      };
+ * 
+ * (LAMBDA EXPRESION METHOD '=>')
+ * The above code can be rewritten using lambda expression as shown below. Notice that with lambda we cannot omit the parameter list.
+ *      
+ *      Button1.Click += (eventSender, eventAgrs) =]
+ *      {
+ *          MessageBox.Show("Button Clicked");
+ *      };
+ * 
+ */
+
+
+//class Program
+//{
+//    public static void Main()
+//    {
+//        List<Employee> listEmployees = new List<Employee>()
+//        {
+//            new Employee{ ID= 101, Name = "Mark"},
+//            new Employee{ ID= 102, Name = "John"},
+//            new Employee{ ID= 103, Name = "Mary"},
+//        };
+
+//        // Step 2
+//        Predicate<Employee> employeePredicate = new Predicate<Employee>(FindEmployee);
+
+//        // Step 3 
+//        // to find an employee with Id = 103, using lambda expression
+//        //Employee employee = listEmployees.Find(x => x.ID == 103);
+
+//        // OR
+
+//        // Step 3 ( (Employee x) =>  x.ID == 103 ) does not effect others
+//        // to find ean employee with Id =103, by explicitly specify the Input type but not required
+//        Employee employee = listEmployees.Find((Employee x) =>  x.ID == 103);
+//        Console.WriteLine("Id = {0}, Name = {1}", employee.ID, employee.Name);
+
+//        int count = listEmployees.Count(x => x.Name.StartsWith("M"));
+//        Console.WriteLine("Count = " + count);
+//    }
+
+//    // Step 1
+//    public static bool FindEmployee(Employee Emp)
+//    {
+//        return Emp.ID == 102;
+//    }
+
+//    public class Employee
+//    {
+//        public int ID { get; set; }
+//        public string Name { get; set; }
+//    }
+//}
+
+
+
+
+//******************************  PART 100 (Func Delegate)  *****************************//
+/*
+ * What is Func[T, TResult] in C#? ( 1st parameter 'T' is input, 2nd parameter 'TResult 'is what delegate is going to return)
+ * In simple terms, Func[T, TResult] is just a generic delegate. 
+ * Depending on the requirement, the type parameters (T and TResult) can be replaced with the corresponding type arguments. 
+ * 
+ * For example, Func[Employee, string] is a delegate that represents a function expecting Employee object as an input parameter and returns a string.
+ * 
+ * 
+ * 
+ * What is the difference between Func delegate and lambda expression?
+ * They're the same, just two different ways to write the same thing. 
+ * The lambda syntax is newer, more concise and easy to write.
+ * 
+ * What if I have to pass two or more input parameters?
+ * As of this recording there are 17 overloaded versions of Func, which enables us to pass variable number and type of input parameters. 
+ * In the example below, Func[int, int, string] represents a function that expects 2 int input parameters and returns a string.
+
+ */
+
+
+//class Program
+//{
+//    public static void Main()
+//    {
+//        List<Employee> listEmployees = new List<Employee>()
+//        {
+//            new Employee { ID = 101, Name = "Mark" },
+//            new Employee { ID = 102, Name = "John" },
+//            new Employee { ID = 103, Name = "Mary" },
+//        };
+
+//        // Create a Func delegate 
+//        Func<Employee, string> selector = employee => "Name = " + employee.Name;
+//        // Pass the delegate to the Select() LINQ function
+//        IEnumerable<string> names = listEmployees.Select(selector);
+
+//        // The above output can be achieved using lambda expression as shown below
+//        // IEnumerable[string] names = listEmployees.Select(employee =] "Name = " + employee.Name);
+
+//        foreach (string name in names)
+//        {
+//            Console.WriteLine(name);
+//        }
+//    }
+
+//    public class Employee
+//    {
+//        public int ID { get; set; }
+//        public string Name { get; set; }
+//    }
+//}
+
+
+
+/// //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//// Func delegate with 2 parameters
+//class Program
+//{
+//    public static void Main()
+//    {
+//        Func<int, int, string> FuncDelegate = (firstNumber, secondNumber) => "Sum = " + (firstNumber + secondNumber).ToString();
+
+//        string result = FuncDelegate(10, 20);
+//        Console.WriteLine(result);
+//    }
+
+//    public class Employee
+//    {
+//        public int ID { get; set; }
+//        public string Name { get; set; }
+//    }
+//}
+
+
+
+//******************************  **PART 101 (Async and await example)  *****************************//
+/*
+ * 
+ */
+
+//must use using windows form
+
+//namespace AsyncExample
+//{
+//    public partial class Form1 : Form
+//    {
+//        public Form1()
+//        {
+//            InitializeComponent();
+//        }
+
+//        private int CountCharacters()
+//        {
+//            int count = 0;
+//            using (StreamReader reader = new StreamReader("c:\\Data"))
+//            {
+//                string content = reader.ReadToEnd();
+//                count = content.Length;
+//            }
+
+//            return count;
+//        }
+
+//        //// Before async and await
+//        //private void btnProcessFile_Click(object sender, EventArgs e)
+//        //{
+//        //    lblCount.Text = "Processing File. Please wait...";
+//        //    int count = CountCharacters();
+//        //    lblCount.Text = count.ToString() + " characters in file";
+//        //}
+
+
+//        // After async and await
+//                // 1
+//        private async void btnProcessFile_Click(object sender, EventArgs e)
+//        {
+//            // 2
+//            Task<int> task = new Task<int>();
+//            task.Start();
+
+//            lblCount.Text = "Processing File. Please wait...";
+//                        // 3
+//            int count = await task;
+//            lblCount.Text = count.ToString() + " characters in file";
+//        }
+
+
+//    }
+//}
+
+
+
+//******************************  PART 102 (Wait for thread to finish without blocking)  *****************************//
+/*
+ * 
+ */
+
+
+//must use using windows form
+namespace AsyncExample
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private int CountCharacters()
+        {
+            int count = 0;
+            using (StreamReader reader = new StreamReader("c:\\Data"))
+            {
+                string content = reader.ReadToEnd();
+                count = content.Length;
+            }
+
+            return count;
+        }
+
+        int characterCount = 0;
+
+        private  void btnProcessFile_Click(object sender, EventArgs e)
+        {
+            int count = 0;
+            Thread thread = new Thread(() => 
+            {
+                characterCount = CountCharacters();
+                //Action action = () => lblCount.text = count.ToString() + " characters in file";
+
+                ////        OR
+
+                Action action = new Action(SetLabelTextProperty);
+                this.BeginInvoke(action);
+            });
+            thread.Start();
+
+            lblCount.Text = "Processing File. Please wait...";
+        }
+
+        private void SetLabelTextProperty()
+        {
+            lblCount.Text = characterCount.ToString() + " characters in file";
+        }
+    }
+}
